@@ -1,21 +1,23 @@
 import streamlit as st
 
-st.set_page_config(page_title="Movie Recommender System", page_icon=":material/edit:")
+st.set_page_config(page_title="Movie Recommender System", page_icon=":film_frames:")
 
-intro_page = st.Page("sites/intro.py", title="Introduction")
-data_exploration_page = st.Page("sites/data_exploration.py", title="Data Exploration")
-data_prep_page = st.Page("sites/data_preprocessing.py", title="Data Preprocessing")
-models_page = st.Page("sites/models.py", title="Models")
-results_page = st.Page("sites/results.py", title="Results")
-outlook_page = st.Page("sites/challenges_outlook.py", title="Challenges & Outlook")
-conclusion_page = st.Page("sites/conclusion.py", title="Conclusion")
+intro_page = st.Page("sites/intro.py", title="Introduction") #, icon='🎥')
+data_exploration_page = st.Page("sites/data_exploration.py", title="Data Exploration") #, icon='📊')
+data_prep_page = st.Page("sites/data_preprocessing.py", title="Data Preprocessing") #, icon='🔁')
+models_clas_page = st.Page("sites/models_classical.py", title="Models - classical") #, icon='🧮')
+models_adv_page = st.Page("sites/models_advanced.py", title="Models - advanced") #, icon='🧮')
+results_page = st.Page("sites/results.py", title="Results") #, icon='🥇')
+outlook_page = st.Page("sites/challenges_outlook.py", title="Challenges & Outlook") #, icon='🗨️')
+conclusion_page = st.Page("sites/conclusion.py", title="Conclusion") #, icon='📑')
 about_page = st.Page("sites/about.py", title="About")
 
 
 pg = st.navigation([intro_page,
                     data_exploration_page,
                     data_prep_page,
-                    models_page,
+                    models_clas_page,
+                    models_adv_page,
                     results_page,
                     outlook_page,
                     conclusion_page,
