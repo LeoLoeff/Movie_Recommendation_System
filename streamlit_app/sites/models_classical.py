@@ -8,11 +8,16 @@ st.header('Classical Models')
 # counter for automated chart number updates
 n_chart = 0
 
+###################################################################################################
+########################################### methodology ###########################################
+###################################################################################################
+
 st.subheader('Methodology')
 st.markdown('FILL WITH TEXT')
 
-
-################################## parameter tuning section #########################################
+#####################################################################################################
+##################################### parameter tuning section ######################################
+#####################################################################################################
 
 st.subheader('Surprise models: parameter tuning and cross-validation')
 st.markdown('''**Surprise** is a Python library for recommender systems, which focuses on collaborative filtering.''')
@@ -51,10 +56,11 @@ with st.expander('See MAE, MSE and RMSE for Surprise models with default* parame
     st.plotly_chart(fig)
     st.caption(f'Chart {n_chart}: Different performance metrics for default Surprise models.')
 
+####################################################################################################
+##################################### cross-validation section #####################################
+####################################################################################################
 
-################################## cross-validation section #########################################
-
-### data import and preparation
+#################################### data import and preparation ####################################
 
 cv_results = joblib.load('../data/models/surp_cv_results.json')
 
@@ -74,7 +80,7 @@ df_cv_results['model'].loc[df_cv_results.model == 'rand'] = 'NormalPredictor'
 agg_cv_results = df_cv_results.groupby(by=['model']).agg(['mean','std']) #, as_index=False
 
 
-### char cv results
+######################################### chart cv results #########################################
 n_chart = n_chart + 1
 
 with st.sidebar.container(border=True):
@@ -108,7 +114,7 @@ st.caption(f'Chart {n_chart}: Average {metric} from 5-fold cross-validation of o
 st.markdown('''*GridSearchCV* was applied to all elegible models (*SlopeOne* and *NormalPredictor* do not take arguments).
             Performance was measured in 5-fold *cross-validation*.''')
 
-### chart cv times
+########################################## chart cv times ##########################################
 with st.expander('See train and test time per model'):
     n_chart = n_chart + 1
 
@@ -133,9 +139,108 @@ with st.expander('See train and test time per model'):
     st.plotly_chart(fig)
     st.caption(f'Chart {n_chart}: Average fit and test times during 5-fold cross-validation of optimized Surprise models.')
 
+####################################################################################################
+##################################### precision@k and recall@k #####################################
+####################################################################################################
+
+st.subheader('Surprise models: precision@k and recall@k')
+st.markdown('''
+    Transformation of regression problem to classification problem by setting threshold:
+    - rating / prediction >= 3,5 equals relevant / true
+    - rating / prediction < 3,5 equals not relevant / false
+''')
+
+st.latex(r'''precision@k = \frac{number\:of\:relevant\:recommendations}{number\:of\:recommended\:items}''')
+
+####################################### data loading and prep #######################################
+
+df_precision_recall_at_k = joblib.load('../data/models/surp_precision_at_k_recall_at_k.json')
+
+# create empty DataFrame with columns according to df_precision_recall_at_k
+keys = list(df_precision_recall_at_k.keys()) # list of keys, which hold the model names
+df_df_precision_recall_at_k = pd.DataFrame(columns=df_precision_recall_at_k[keys[0]].keys()) # e.g. use first model to retrieve coumns
+
+# # iterate over keys to fill df_df_precision_recall_at_k successively
+for model in keys:
+    df = pd.DataFrame.from_dict(df_precision_recall_at_k[model])
+    df['model'] = model[:-5] # write model name in new column, omitting the last 5 characters to drop "_dict"
+    df_df_precision_recall_at_k = pd.concat([df_df_precision_recall_at_k, df], axis=0, ignore_index=True) # append df to df_df_precision_recall_at_k
+df_df_precision_recall_at_k.model.unique()
+
+# aggregate 
+agg_df_precision_recall_at_k = df_df_precision_recall_at_k.groupby(by=['model'], as_index=False).agg(['mean','std']) #, as_index=False
+# split in single DataFrame for precision and recall respectively
+agg_df_precision_at_k = agg_df_precision_recall_at_k.iloc[:10].reset_index(drop=True)
+agg_df_recall_at_k = agg_df_precision_recall_at_k.iloc[10:].reset_index(drop=True)
+
+agg_df_precision_at_k['model'] = agg_df_precision_at_k['model'].apply(lambda x: x[11:])
+agg_df_precision_at_k.set_index('model', inplace=True)
+agg_df_precision_at_k.rename(index={'Baseline': 'BaselineOnly', 'CC': 'CoClustering', 'rand': 'NormalPredictor'}, inplace=True)
+agg_df_recall_at_k['model'] = agg_df_recall_at_k['model'].apply(lambda x: x[8:])
+agg_df_recall_at_k.set_index('model', inplace=True)
+agg_df_recall_at_k.rename(index={'Baseline': 'BaselineOnly', 'CC': 'CoClustering', 'rand': 'NormalPredictor'}, inplace=True)
+
+
+######################################### chart precision@k #########################################
+n_chart = n_chart + 1
+
+fig = go.Figure()
+fig.add_trace(go.Bar(x = agg_df_precision_at_k.index, y = agg_df_precision_at_k[3]['mean'],
+                     error_y=dict(type = 'data', array = agg_df_precision_at_k[3]['std'], visible = True), name = 'k = 3', orientation='v')) 
+fig.add_trace(go.Bar(x = agg_df_precision_at_k.index, y = agg_df_precision_at_k[5]['mean'],
+                     error_y=dict(type = 'data', array = agg_df_precision_at_k[3]['std'], visible = True), name = 'k = 5', orientation='v')) 
+fig.add_trace(go.Bar(x = agg_df_precision_at_k.index, y = agg_df_precision_at_k[10]['mean'],
+                     error_y=dict(type = 'data', array = agg_df_precision_at_k[3]['std'], visible = True), name = 'k = 10', orientation='v')) 
+fig.add_trace(go.Bar(x = agg_df_precision_at_k.index, y = agg_df_precision_at_k[20]['mean'],
+                     error_y=dict(type = 'data', array = agg_df_precision_at_k[3]['std'], visible = True), name = 'k = 20', orientation='v')) 
+
+fig.update_layout(xaxis_title = 'Model', yaxis_title = 'Precision@k') # axis titles
+fig.update_layout(autosize=False, width=1000, height=400) #,legend=dict(orientation="h", y=-0.1)) # Figure size
+fig.update_layout(legend=dict(orientation="h", xanchor="center", x=0.5,yanchor="bottom",  y=1.05))
+
+# sort ascending
+order = agg_df_precision_at_k[3]['mean'].sort_values(ascending=False).index
+fig.update_xaxes(categoryorder='array', categoryarray= order, tickangle=30)
+
+st.plotly_chart(fig)
+st.caption(f'Chart {n_chart}: Average precision@k of Surprise models with optimized parameters.')
+
+######################################### chart recall@k #########################################
+with st.expander('See recall@k'):
+    st.latex(r'''recall@k = \frac{number\:of\:relevant\:recommendations}{number\:of\:relevant\:items}''')
+
+    n_chart = n_chart + 1
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(x = agg_df_recall_at_k.index, y = agg_df_recall_at_k[3]['mean'],
+                        error_y=dict(type = 'data', array = agg_df_recall_at_k[3]['std'], visible = True), name = 'k = 3', orientation='v')) 
+    fig.add_trace(go.Bar(x = agg_df_recall_at_k.index, y = agg_df_recall_at_k[5]['mean'],
+                        error_y=dict(type = 'data', array = agg_df_recall_at_k[3]['std'], visible = True), name = 'k = 5', orientation='v')) 
+    fig.add_trace(go.Bar(x = agg_df_recall_at_k.index, y = agg_df_recall_at_k[10]['mean'],
+                        error_y=dict(type = 'data', array = agg_df_recall_at_k[3]['std'], visible = True), name = 'k = 10', orientation='v')) 
+    fig.add_trace(go.Bar(x = agg_df_recall_at_k.index, y = agg_df_recall_at_k[20]['mean'],
+                        error_y=dict(type = 'data', array = agg_df_recall_at_k[3]['std'], visible = True), name = 'k = 20', orientation='v')) 
+
+
+    fig.update_layout(xaxis_title = 'Model', yaxis_title = 'Recall@k') # Title and axis titles
+    fig.update_layout(autosize=False, width=1000, height=400) #,legend=dict(orientation="h", y=-0.1)) # Figure size
+    fig.update_layout(legend=dict(orientation="h", xanchor="center", x=0.5,yanchor="bottom",  y=1.05))
+
+    # sort ascending
+    order = agg_df_recall_at_k[3]['mean'].sort_values(ascending=False).index
+    fig.update_xaxes(categoryorder='array', categoryarray= order)
+
+    st.plotly_chart(fig)
+    st.caption(f'Chart {n_chart}: Average recall@k of Surprise models with optimized parameters.')
+
+###################################################################################################
+############################################ learnings ############################################
+###################################################################################################
+
 # with st.expander('See learnings'):
 box =  st.container(border=True)
 box.markdown('#### Learnings from classical model training')
 box.markdown('- All Surprise models perform significantly better than benchmark (random predictor).')
 box.markdown('- Parameter tuning with GridSearchCV provided slight improvement of model performance, most significantly for KNNBasic (MAE was reduced by 7%).')
+box.markdown('- On average 2/3 of recommendations are relevant for a user (precision@k).')
 box.markdown('- The top 3 classical models are KNNBaseline, SVD and KNNZScore.')
