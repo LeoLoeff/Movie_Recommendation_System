@@ -4,6 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+movie_rec_path = os.getenv('MOVIE_REC_PATH')
 
 st.header('Data Exploration')
 
@@ -26,7 +31,9 @@ st.dataframe(ml, hide_index=True)
 ### loading data and calculations
 @st.cache_data
 def load_df_movies():
-    df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
+    # df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
+    df = pd.read_csv(f'{movie_rec_path}/data/raw/ml-25m/movies.csv')
+    os.getenv('MOVIE_REC_PATH')
     return df
 df_movies = load_df_movies()
 
