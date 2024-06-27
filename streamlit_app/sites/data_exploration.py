@@ -4,11 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-movie_rec_path = os.getenv('MOVIE_REC_PATH')
 
 st.header('Data Exploration')
 
@@ -31,13 +26,11 @@ st.dataframe(ml, hide_index=True)
 ### loading data and calculations
 @st.cache_data
 def load_df_movies():
-    # df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
-    df = pd.read_csv(f'{movie_rec_path}/data/raw/ml-25m/movies.csv')
-    os.getenv('MOVIE_REC_PATH')
+    df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
     return df
 df_movies = load_df_movies()
 
-with st.expander('See example of movie data'):
+if st.checkbox('Show example movies data'):
     st.dataframe(df_movies.head(), hide_index=True)
 
 # hot-one encoding to split genres in separate columns using pandas strin method
@@ -128,16 +121,13 @@ plt.ylabel('average rating');
 
 ### display of charts
 
-st.subheader('Statistics and data visualization')
-
 # checkbox for displaying plots
-with st.expander('See genre analysis'):
-    st.markdown('#### Genre distribution and rating')
+if st.checkbox('Show DataViz'):
+    st.subheader('Genre distribution and rating')
     st.plotly_chart(fig_pie)
     st.pyplot(fig_box)
 
-with st.expander('See rating analysis'):
-    st.markdown('#### Rating behaviour')
+    st.subheader('Rating behaviour')
     st.markdown('**Basic statistics**')
 
     left_column, right_column = st.columns(2)
@@ -155,8 +145,7 @@ with st.expander('See rating analysis'):
     st.write('In the following scatter plot each point represents a user. For better readability one user with about 32.000 ratings was cut out by limiting the x-axis.')
     st.pyplot(fig_scatter_rating)
 
-with st.expander('See tag analysis'):
-    st.markdown('#### Tagging behaviour')
+    st.subheader('Tagging behaviour')
     st.markdown('**Basic statistics**')
     st.write('Only 9% of users did apply tags, the following statistic refers to those users only.')
     left_column, right_column = st.columns(2)
@@ -166,9 +155,8 @@ with st.expander('See tag analysis'):
     st.write('In the following scatter plot each point represents a user. Users who did not use any tags are higlighted in pink, the rugplot underlines the user concentration at zero tags.')
     st.image('../data/visualization/rug_number_tag_vs_number_ratings.png')
 
-with st.expander('See learnings'):
-    # box =  st.container(border=True)
-    st.markdown('#### Learnings from data exploration')
-    st.markdown('- genres show imbalanced distribution')
-    st.markdown('- one user gave about 6000 ratings of 5.0 stars, will be removed in pre-processing')
-    st.markdown('- only 9% users applied tags to minimum one movie => influence of tags on predictive performance might be minimal')
+    box =  st.container(border=True)
+    box.markdown('#### Learnings from data exploration')
+    box.markdown('- genres show imbalanced distribution')
+    box.markdown('- one user gave about 6000 ratings of 5.0 stars, will be removed in pre-processing')
+    box.markdown('- only 9% users applied tags to minimum one movie => influence of tags on predictive performance might be minimal')
