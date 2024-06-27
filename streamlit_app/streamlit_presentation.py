@@ -8,8 +8,7 @@ data_prep_page = st.Page("sites/data_preprocessing.py", title="Data Preprocessin
 models_clas_page = st.Page("sites/models_classical.py", title="Models - classical") #, icon='🧮')
 models_adv_page = st.Page("sites/models_advanced.py", title="Models - advanced") #, icon='🧮')
 results_page = st.Page("sites/results.py", title="Results") #, icon='🥇')
-outlook_page = st.Page("sites/challenges_outlook.py", title="Challenges & Outlook") #, icon='🗨️')
-conclusion_page = st.Page("sites/conclusion.py", title="Conclusion") #, icon='📑')
+conclusion_page = st.Page("sites/conclusion.py", title="Conclusion & Outlook") #, icon='📑')
 about_page = st.Page("sites/about.py", title="About")
 
 
@@ -20,7 +19,6 @@ pg = st.navigation([intro_page,
                     models_clas_page,
                     models_adv_page,
                     results_page,
-                    outlook_page,
                     conclusion_page,
                     about_page])
 
