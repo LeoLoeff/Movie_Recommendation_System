@@ -27,16 +27,25 @@ You can also add a brief presentation of the team members with links to your res
 
 **Example:**
 
-This repository contains the code for our project **PROJECT_NAME**, developed during our [Data Scientist training](https://datascientest.com/en/data-scientist-course) at [DataScientest](https://datascientest.com/).
+This repository contains the code for our project **Movie Recommendation System**, developed during our [Data Scientist training](https://datascientest.com/en/data-scientist-course) at [DataScientest](https://datascientest.com/).
 
-The goal of this project is to **...**
+The goal of this project is to create a recommendation system based on the MovieLens 25M dataset using collaborative filtering and model optimization through Deep Learning algorithms.
 
 This project was developed by the following team :
 
-- John Doe ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
-- Martin Dupont ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
+- Lena Ametsbichler ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
+- Leonhard Löffler ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
 
 You can browse and run the [notebooks](./notebooks). 
+
+You will need to download the data from [MovieLens](https://files.grouplens.org/datasets/movielens/ml-25m.zip) and extract/save it to the directory data/raw:
+
+├── data               <- Should be in your computer but not on Github (only in .gitignore)
+│   ├── dataframes     <- Pre-processed data for Streamlit app.
+│   ├── models         <- Pre-calculated models for Streamlit app.
+│   ├── processed      <- The final, canonical data sets for modeling; Should be on your computer but not on Github (only in .gitignore)
+│   ├── raw            <- The original, immutable data dump; Should be on your computer but not on Github (only in .gitignore)
+│   └── visualization  <- Pre-calculated charts for Streamlit app.
 
 You will need to install the dependencies (in a dedicated environment) :
 
