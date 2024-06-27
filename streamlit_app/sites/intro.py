@@ -1,8 +1,13 @@
 import streamlit as st
+from PIL import Image
+import os
 
 st.title("Movie Recommender System")
 st.text("")  # Add empty text for spacing
-st.image("images/img1.jpg", caption=" ", width=650)
+
+# Find and display image
+st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "img1.jpg")), caption=" ", width=650)
+
 st.markdown("""
     <p style="line-height: 2;">     
     Recommendation systems are important tools, enhancing customer experience and boosting revenue by providing personalized product or service suggestions.

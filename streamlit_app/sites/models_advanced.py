@@ -1,4 +1,6 @@
 import streamlit as st
+from PIL import Image
+import os
 
 st.header('Advanced Models')
 st.write("""
@@ -30,4 +32,5 @@ st.write("""
     - When additional features such as tag embeddings and one-hot encoded genres were included, the updated NCF model showed slight improvements but also presented mixed results.
 
 """)
-st.image("images/img3.jpg", caption="Training NCF", width=550)
+# Find and display image
+st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "img3.jpg")), caption=" ", width=600)
