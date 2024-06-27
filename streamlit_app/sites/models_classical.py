@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 import plotly.graph_objects as go
+import os
 
 st.header('Classical Models')
 
@@ -26,8 +27,9 @@ st.markdown('''**Surprise** is a Python library for recommender systems, which f
             # matrix factorization algorithms like *SVD* and *NMF* (non-negative matrix factorization).  
 st.markdown('''Benchmark: *NormalPredictor* model, which randomly predicts ratings between 0.5 and 5.0, based on the rating distribution in the training set.''')
 
-
-default_metrics = joblib.load('../data/models/surp_metrics_default_models.pkl')
+current_dir = os.path.dirname(__file__)
+default_metrics_path = os.path.join(current_dir, "..","..", "data", "models", "surp_metrics_default_models.pkl")
+default_metrics = joblib.load(default_metrics_path)
 
 # create empty DataFrame with columns according to metrics
 keys = list(default_metrics.keys()) # list of keys, which hold the model names
@@ -62,7 +64,8 @@ with st.expander('See MAE, MSE and RMSE for Surprise models with default* parame
 
 #################################### data import and preparation ####################################
 
-cv_results = joblib.load('../data/models/surp_cv_results.json')
+cv_results_path = os.path.join(current_dir, "..", "..", "data", "models", "surp_cv_results.json")
+cv_results = joblib.load(cv_results_path)
 
 # create empty DataFrame with columns according to cv_results
 keys = list(cv_results.keys()) # list of keys, which hold the model names
@@ -154,7 +157,8 @@ st.latex(r'''precision@k = \frac{number\:of\:relevant\:recommendations}{number\:
 
 ####################################### data loading and prep #######################################
 
-df_precision_recall_at_k = joblib.load('../data/models/surp_precision_at_k_recall_at_k.json')
+precision_recall_path = os.path.join(current_dir, "..", "..", "data", "models", "surp_precision_at_k_recall_at_k.json")
+df_precision_recall_at_k = joblib.load(precision_recall_path)
 
 # create empty DataFrame with columns according to df_precision_recall_at_k
 keys = list(df_precision_recall_at_k.keys()) # list of keys, which hold the model names
