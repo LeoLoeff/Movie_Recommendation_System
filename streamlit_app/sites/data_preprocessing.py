@@ -2,18 +2,9 @@ import streamlit as st
 
 st.header('Data Preprocessing')
 st.write("""
-    The preprocessing steps were carried out as follows:
-
-    1. **Data Import**:
-        - Imported necessary dataframes from the MovieLens 25M dataset.
-        - Specifically utilized 'genome-scores', 'genome-tags', 'movies', and 'ratings' dataframes which contain essential information on movies, user ratings, and genome tags.
+    After importing the dataframes 'genome-scores', 'genome-tags', 'movies', and 'ratings' from the MovieLens 25M dataset, the preprocessing steps were carried out as follows:
     
-    2. **Data Merging**:
-        - Merged the 'movies' dataframe with the 'genome-scores' dataframe on the 'movieId' column to combine movie details with their respective genome scores.
-        - Next, merged the resulting dataframe with the 'genome-tags' dataframe on the 'tagId' column, integrating descriptive tags for each genome score.
-        - Dropped the 'tagId' column as it was no longer necessary for further analysis.
-    
-    3. **Filtering Tags**:
+    1. **Filtering Tags**:
         - Sorted the combined dataframe by 'movieId' and 'relevance' in descending order.
         - Retained only the top 40 tags for each movie, making the dataset more manageable and meaningful.
     

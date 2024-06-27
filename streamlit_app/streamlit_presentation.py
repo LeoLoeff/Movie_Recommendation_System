@@ -12,6 +12,7 @@ conclusion_page = st.Page("sites/conclusion.py", title="Conclusion & Outlook") #
 about_page = st.Page("sites/about.py", title="About")
 
 
+
 pg = st.navigation([intro_page,
                     data_exploration_page,
                     data_prep_page,
