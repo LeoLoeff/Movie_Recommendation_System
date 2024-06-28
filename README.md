@@ -29,15 +29,19 @@ pip install -r requirements.txt
 
 ## Streamlit App
 
-**Add explanations on how to use the app.**
-
-To run the app (be careful with the paths of the files in the app):
-
 ```shell
 conda create --name my-awesome-streamlit python=3.9
 conda activate my-awesome-streamlit
 pip install -r requirements.txt
-streamlit run app.py
+streamlit run streamlit_presentation.py
 ```
 
 The app should then be available at [localhost:8501](http://localhost:8501).
+
+**How to use the app:**
+
+- Navigate: Open your browser and enter the URL of the Streamlit app.
+- Interact: Use the sidebar to navigate topics, adjust parameters and settings.
+- View Output: The main area will display outputs like charts, tables, and text.
+- Refresh: Streamlit updates in real-time; adjust inputs and observe changes immediately.
+
