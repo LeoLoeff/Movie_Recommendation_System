@@ -184,7 +184,7 @@ with st.expander('See tag analysis'):
 
 box =  st.container(border=True)
 box.markdown('#### Learnings from data exploration')
-box.markdown('- Genres show imbalanced distribution: out of 20 genres the top 2 (drama & comedy) make up for more than one third of all movies.')
+# box.markdown('- Genres show imbalanced distribution: out of 20 genres the top 2 (drama & comedy) make up for more than one third of all movies.')
 box.markdown('- One user gave about 6000 ratings of 5.0 stars, will be removed in pre-processing.')
 box.markdown('- There are users that gave exclusively rated movies with 0.5 stars. The same applies to other users with 5.0 stars respectively.')
 box.markdown('- Only 9% users applied tags to minimum one movie => influence of tags on predictive performance might be minimal.')
