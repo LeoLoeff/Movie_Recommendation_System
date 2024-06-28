@@ -1,28 +1,73 @@
 import streamlit as st
+import pandas as pd
 
-st.header('Data Preprocessing')
+st.header('Preprocessing')
+
 st.write("""
-    After importing the dataframes 'genome-scores', 'genome-tags', 'movies', and 'ratings' from the MovieLens 25M dataset, the preprocessing steps were carried out as follows:
+The **MovieLens 25M dataset** is a widely used dataset for recommender systems, with the data being collected from 1995 to 2019.  
+
+Each rating of a user ranges from 0.5 to 5.0 stars.
+Free-text tagging provided by users, enhances the descriptive power of the dataset. 
+""")
+
+
+# Data for the table
+movielens_data = {
+    "Description": ["Ratings", "Tags added", "Movies", "Users"],
+    "Number of data": ["25 million", "to 1.1 million movies", "62,000", "162,000"]
+}
+
+# Creating DataFrame
+df_movielens = pd.DataFrame(movielens_data)
+
+# Displaying the table in Streamlit
+with st.expander('See more Key Performance Indicators (KPIs) of the MovieLens Dataset'):
+    st.table(df_movielens)
     
-    1. **Filtering Tags**:
-        - Sorted the combined dataframe by 'movieId' and 'relevance' in descending order.
-        - Retained only the top 40 tags for each movie, making the dataset more manageable and meaningful.
     
-    4. **Aggregating Tags and Relevances**:
-        - Grouped the dataframe by 'movieId', 'title', and 'genres'.
-        - Aggregated 'relevance' and 'tag' values into lists within each group, maintaining a structured and compact form for each movie entry.
+#########################################################################################################
+################################### Preprocessing steps #################################################
+#########################################################################################################
     
-    5. **Merging with Ratings**:
-        - Removed the 'timestamp' column in the 'ratings' dataframe as it was unnecessary for the analysis.
-        - Merged the aggregated tags dataframe with the 'ratings' dataframe on the 'movieId' column, linking each movie's tag information with user ratings.
-        - Dropped rows with missing values and converted 'userId' column to integer type for memory optimization.
-    
-    6. **Filtering by Movie Occurrences**:
-        - Counted occurrences of each 'movieId' and retained only movies with 2000 or more ratings to ensure robustness.
-    
-    7. **Sampling**:
-        - Defined a custom sampling function to reduce the number of rows while maintaining a representative sample.
-        - Applied the sampling function to each 'movieId' group, resulting in a dataset with 5,273,559 entries.
-    
-    The final dataset, approximately 301.8 MB in memory usage, is ready for further analysis and modeling.
+
+
+st.subheader('Data Preprocessing Steps')
+
+
+
+
+st.write("""
+After selecting and merging the dataframes 'genome-scores', 'genome-tags', 'movies', and 'ratings' from the MovieLens 25M dataset, the following preprocessing steps were carried out:
+""")
+
+with st.expander('1. Filtering and Aggregating Tags'):
+    st.write("""
+    - Using the genome-scores, we sorted the tags by relevance in descending order.
+    - We retained only the top 40 tags for each movie. 
+    - Aggregating the 'relevance' and 'tag' values into lists, making the dataset more manageable and compact.
+    """)
+
+with st.expander('2. Word2Vec'):
+    st.write("""
+    - Trained a Word2Vec model on the aggregated tags to convert them into dense vector representations.
+    - This transformation helped capture semantic relationships between tags and decreased the size of the dataset.
+    """)
+
+with st.expander('3. Cleaning up the Dataset'):
+    st.write("""
+    - Removed unnecessary columns.
+    - Dropped rows with missing values.
+    - Dropped outliers.
+    - Converted data types of columns to optimize memory usage and processing efficiency.
+    """)
+
+with st.expander('4. Sampling'):
+    st.write("""
+    - Filtered out movies with fewer than 2000 ratings to focus on those with sufficient user interaction.
+    - Using the logarithm, we defined a custom sampling function, reducing the number of rows per movie proportional to the total amount.
+    - Applied the sampling function to each 'movieId' group, resulting in a dataset with 5,273,559 entries.
+    """)
+
+st.write("""
+The final dataset, approximately 301.8 MB in memory usage, was saved to CSV and Parquet and was then ready for further analysis and modeling.
 """)
