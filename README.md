@@ -8,8 +8,8 @@ The goal of this project is to create a recommendation system based on the Movie
 
 This project was developed by the following team :
 
-- Lena Ametsbichler ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
-- Leonhard Löffler ([GitHub](https://github.com/) / [LinkedIn](http://linkedin.com/))
+- Lena Ametsbichler ([GitHub](https://github.com/) / [LinkedIn](https://www.linkedin.com/in/lena-ametsbichler/)
+- Leonhard Löffler ([GitHub](https://github.com/) / [LinkedIn](www.linkedin.com/in/leonhard-loeffler)
 
 You can browse and run the [notebooks](./notebooks). 
 
