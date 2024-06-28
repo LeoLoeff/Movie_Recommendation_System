@@ -14,7 +14,30 @@ n_chart = 0
 ###################################################################################################
 
 st.subheader('Methodology')
-st.markdown('FILL WITH TEXT')
+st.write('''
+     - Study of different models:
+         - Own implementation of user-based and item-based collaborative filtering with k-nearest-neighbor (KNN) approach.
+         - Surprise library for collaborative filtering.
+         - Deep Learning: Neural Collaborative Filtering (NCF).
+     - Parameter tuning with GridSearchCV / RandomizedSearchCV.
+     - Evaluation with 5-fold cross-validation:
+         - Mean Absolute Error (MAE)
+            - Robust to outliers.
+            - Straightforward interpretation (reflects user satisfaction).
+         - Precision / Precision@k
+            ''')
+
+######################################## own implementation ########################################
+
+st.subheader('Own implementation of collaborative filtering')
+st.markdown('''
+            Item-based filtering is quicker and more stable than user-based filtering, when n_users >> n_items due to:
+            - Required memory (160k x 160k user-user-matrix vs. 2400 x 2400 item-item-matirx).
+            - Matrix sparcity (missing values > 98%) with high rating density for items compared to users.
+''')
+
+box =  st.container(border=True)
+box.write('We did provide predictions using the item-based approch, but decided to move on without evaluation due to project timeline.')
 
 #####################################################################################################
 ##################################### parameter tuning section ######################################
@@ -36,7 +59,7 @@ keys = list(default_metrics.keys()) # list of keys, which hold the model names
 # df_metrics = pd.DataFrame(default_metrics, index=['MAE','MSE','RMSE']).T # e.g. use first model to retrieve coumns
 df_metrics = pd.DataFrame(default_metrics, index=['mae','mse','rmse']).T # e.g. use first model to retrieve coumns
 
-with st.expander('See MAE, MSE and RMSE for Surprise models with default* parameters'):
+with st.expander('See MAE, MSE and RMSE for Surprise models with default parameters'):
     n_chart = n_chart + 1
 
     metric = 'mae'

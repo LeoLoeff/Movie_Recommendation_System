@@ -1,14 +1,20 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.graph_objects as go
+from PIL import Image
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+movie_rec_path = os.getenv('MOVIE_REC_PATH')
+
+current_dir = os.path.dirname(__file__)
 
 st.header('Data Exploration')
 
-
-### general information about the dataset
+######################################################################################################
+######################################## introduction dataset ########################################
+######################################################################################################
 
 st.subheader('The MovieLens 25M Dataset')
 
@@ -22,15 +28,19 @@ ml = pd.DataFrame({"table name": ['movies.csv','links.csv','ratings.csv','tags.c
                   
 st.dataframe(ml, hide_index=True)
 
+######################################################################################################
+######################################## loading data, images ########################################
+######################################################################################################
 
-### loading data and calculations
 @st.cache_data
 def load_df_movies():
-    df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
+    # df = pd.read_csv('../../movie_recommendation/data/raw/ml-25m/movies.csv')
+    df = pd.read_csv(f'{movie_rec_path}/data/raw/ml-25m/movies.csv')
+    os.getenv('MOVIE_REC_PATH')
     return df
 df_movies = load_df_movies()
 
-if st.checkbox('Show example movies data'):
+with st.expander('See example of movie data'):
     st.dataframe(df_movies.head(), hide_index=True)
 
 # hot-one encoding to split genres in separate columns using pandas strin method
@@ -42,32 +52,37 @@ df_movies.rename(columns={'(no genres listed)':'no_genre_listed'}, inplace=True)
 
 frequency_genres = df_movies.iloc[:,1:].sum()
 
-@st.cache_data
-def load_genre_ratings():
-    df = pd.read_parquet('../data/dataframes/genre_ratings.parquet.gzip')
-    return df
-genre_ratings = load_genre_ratings()
+# @st.cache_data
+# def load_genre_ratings():
+#     df = pd.read_parquet('../data/dataframes/genre_ratings.parquet.gzip')
+#     return df
+# genre_ratings = load_genre_ratings()
 
-@st.cache_data
-def load_user_rating_avg():
-    df = pd.read_parquet('../data/dataframes/user_rating_avg.parquet.gizp')
-    return df
-user_rating_avg = load_user_rating_avg()
+# @st.cache_data
+# def load_user_rating_avg():
+#     df = pd.read_parquet('../data/dataframes/user_rating_avg.parquet.gizp')
+#     return df
+# user_rating_avg = load_user_rating_avg()
 
-@st.cache_data
-def load_user_rating_sum():
-    df = pd.read_parquet('../data/dataframes/user_rating_sum.parquet.gizp')
-    return df
-user_rating_sum = load_user_rating_sum()
+user_rating_avg_path = os.path.join(current_dir, "..","..", "data", "dataframes", "user_rating_avg.parquet.gizp")
+user_rating_avg = pd.read_parquet(user_rating_avg_path)
 
-df_rat = user_rating_avg.merge(right=user_rating_sum, on='userId', how='outer')
-df_rat.rename(columns={'n_movies':'n_ratings'}, inplace=True)
+# @st.cache_data
+# def load_user_rating_sum():
+#     df = pd.read_parquet('../data/dataframes/user_rating_sum.parquet.gizp')
+#     return df
+# user_rating_sum = load_user_rating_sum()
+# user_rating_sum = pd.read_parquet('../../data/dataframes/user_rating_sum.parquet.gizp')
+
+user_rating_sum_path = os.path.join(current_dir, "..","..", "data", "dataframes", "user_rating_sum.parquet.gizp")
+user_rating_sum = pd.read_parquet(user_rating_sum_path)
+
+# df_rat = user_rating_avg.merge(right=user_rating_sum, on='userId', how='outer')
+# df_rat.rename(columns={'n_movies':'n_ratings'}, inplace=True)
 
 # genre_ratings = pd.read_parquet('../data/dataframes/genre_ratings.parquet.gzip')
 # user_rating_avg = pd.read_parquet('../data/dataframes/user_rating_avg.parquet.gizp')
 # user_rating_sum = pd.read_parquet('../data/dataframes/user_rating_sum.parquet.gizp')
-
-# genre_ratings = pd.read_parquet('../data/dataframes/genre_ratings.parquet.gzip')
 
 stat_user_rating_sum = user_rating_sum.describe()
 stat_user_rating_avg = user_rating_avg.describe()
@@ -88,7 +103,9 @@ styled_stat_user_rating_avg = stat_user_rating_avg.style.apply(higlight_mmm, axi
 
 styled_stat_user_tag_movie = stat_user_tag_movie.style.apply(higlight_mmm, axis=0)
 
-### generation of charts
+#####################################################################################################
+#################################### charts calculation / import ####################################
+#####################################################################################################
 
 # pie chart Proportion of genres
 fig_pie = go.Figure()
@@ -96,56 +113,61 @@ fig_pie.add_trace(go.Pie(labels=frequency_genres.index, values=frequency_genres,
 fig_pie.update_layout(legend_title = 'Genres', title='Proportions of genres', title_x=0.45, title_y=0.95)
 fig_pie.update_layout(autosize=False, width=600, height=600)
 
-# build and cache boxplot of rating distribution per genre
-@st.cache_data
-def build_chart_box():
-    fig_box = plt.figure(figsize=(10, 6))
-    sns.boxplot(genre_ratings.replace({0:np.nan}).iloc[:,1:-2], fliersize=1)
-    plt.title('Distribution movie rating per genre')
-    plt.xticks(rotation=75);
-    return fig_box
-fig_box = build_chart_box()
+# # build and cache boxplot of rating distribution per genre
+# @st.cache_data
+# def build_chart_box():
+#     fig_box = plt.figure(figsize=(10, 6))
+#     sns.boxplot(genre_ratings.replace({0:np.nan}).iloc[:,1:-2], fliersize=1)
+#     plt.title('Distribution movie rating per genre')
+#     plt.xticks(rotation=75);
+#     return fig_box
+# fig_box = build_chart_box()
 
 # build and cache scatterplot avg rating vs. number ratings
 # st.cache_data
 # def build_chart_scatter1():
-fig_scatter_rating = plt.figure(figsize=(10, 5))
-sns.scatterplot(x=df_rat.n_ratings, y=df_rat.avg_rating, hue=df_rat.avg_rating, size=10, legend=False)
-plt.plot([0,6000],[5,5], c='red', alpha=0.6)
-plt.xlim([0,10000])
-plt.title('Average rating over number of ratings a user gave')
-plt.xlabel('number of ratings')
-plt.ylabel('average rating');
+    # fig_scatter_rating = plt.figure(figsize=(10, 5))
+    # sns.scatterplot(x=df_rat.n_ratings, y=df_rat.avg_rating, hue=df_rat.avg_rating, size=10, legend=False)
+    # plt.plot([0,6000],[5,5], c='red', alpha=0.6)
+    # plt.xlim([0,10000])
+    # plt.title('Average rating over number of ratings a user gave')
+    # plt.xlabel('number of ratings')
+    # plt.ylabel('average rating');
 #     return fig
 # fig_scat1 = build_chart_scatter1
 
 ### display of charts
 
-# checkbox for displaying plots
-if st.checkbox('Show DataViz'):
-    st.subheader('Genre distribution and rating')
-    st.plotly_chart(fig_pie)
-    st.pyplot(fig_box)
+######################################################################################################
+################################ display statistics and visualization ################################
+######################################################################################################
 
-    st.subheader('Rating behaviour')
+st.subheader('Statistics and data visualization')
+
+# checkbox for displaying plots
+with st.expander('See genre analysis'):
+    st.markdown('#### Genre distribution and rating')
+    st.plotly_chart(fig_pie)
+    st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "distribution_movie_rating_genre.png")))
+
+with st.expander('See rating analysis'):
+    st.markdown('#### Rating behaviour')
     st.markdown('**Basic statistics**')
 
     left_column, right_column = st.columns(2)
     left_column.write('Number of movies rated by each user:')
     left_column.table(styled_stat_user_rating_sum)
-    
-    # left_column.markdown('- minimum = 20 ratings')
-    # left_column.markdown('- median = 71 ratings')
-    # left_column.markdown('- maximum > 32.000 ratings')
 
     right_column.write('Average rating per user:')
     right_column.table(styled_stat_user_rating_avg)
-    # right_column.markdown('- median = 3.7')
-    # right_column.markdown('- There are users with an average rating of 0.5 as well as users with 5.0 --> their ratings have a standard deviation of 0')
-    st.write('In the following scatter plot each point represents a user. For better readability one user with about 32.000 ratings was cut out by limiting the x-axis.')
-    st.pyplot(fig_scatter_rating)
 
-    st.subheader('Tagging behaviour')
+    st.write('In the following scatter plot each point represents a user. For better readability one user with about 32.000 ratings was cut out by limiting the x-axis.')
+    img_path = os.path.join(current_dir, "..", "images", "average_rating_vs_number of ratings.png")
+    # st.image('../images/average_rating_vs_number of ratings.png')
+    st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "average_rating_vs_number_of_ratings.png")))
+
+with st.expander('See tag analysis'):
+    st.markdown('#### Tagging behaviour')
     st.markdown('**Basic statistics**')
     st.write('Only 9% of users did apply tags, the following statistic refers to those users only.')
     left_column, right_column = st.columns(2)
@@ -153,10 +175,16 @@ if st.checkbox('Show DataViz'):
     left_column.table(styled_stat_user_tag_movie)
 
     st.write('In the following scatter plot each point represents a user. Users who did not use any tags are higlighted in pink, the rugplot underlines the user concentration at zero tags.')
-    st.image('../data/visualization/rug_number_tag_vs_number_ratings.png')
+    # st.image('../data/visualization/rug_number_tag_vs_number_ratings.png')
+    st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "rug_number_tag_vs_number_ratings.png")))
 
-    box =  st.container(border=True)
-    box.markdown('#### Learnings from data exploration')
-    box.markdown('- genres show imbalanced distribution')
-    box.markdown('- one user gave about 6000 ratings of 5.0 stars, will be removed in pre-processing')
-    box.markdown('- only 9% users applied tags to minimum one movie => influence of tags on predictive performance might be minimal')
+###################################################################################################
+############################################ learnings ############################################
+###################################################################################################
+
+box =  st.container(border=True)
+box.markdown('#### Learnings from data exploration')
+box.markdown('- Genres show imbalanced distribution: out of 20 genres the top 2 (drama & comedy) make up for more than one third of all movies.')
+box.markdown('- One user gave about 6000 ratings of 5.0 stars, will be removed in pre-processing.')
+box.markdown('- There are users that gave exclusively rated movies with 0.5 stars. The same applies to other users with 5.0 stars respectively.')
+box.markdown('- Only 9% users applied tags to minimum one movie => influence of tags on predictive performance might be minimal.')
