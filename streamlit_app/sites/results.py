@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import os
 
-st.header('Results')
+st.header('Results & Conclusion')
 
 # counter for automated chart number updates
 n_chart = 0
@@ -32,17 +32,17 @@ Our initial evaluation **without parameter tuning** showed that the SVD model pe
 
 # Data for the table
 model_data = {
-    "Metric": ["MAE", "MSE", "RMSE"],
-    "knnBasic": [0.7177, 0.8917, 0.9443],
-    "knnMeans": [0.6538, 0.7428, 0.8619],
-    "knnBaseline": [0.6527, 0.7411, 0.8609],
-    "knnZScore": [0.6531, 0.7438, 0.8625],
-    "SVD": [0.6515, 0.7317, 0.8554],
-    "NMF": [0.6838, 0.8028, 0.8960],
-    "NormalPredictor": [1.1537, 2.0930, 1.4467],
-    "SlopeOne": [0.6619, 0.7573, 0.8702],
-    "BaselineOnly": [0.6675, 0.7583, 0.8708],
-    "CoClustering": [0.7125, 0.8424, 0.9178]
+    "Metric": ["MAE"],
+    "knnBasic": [0.7177],
+    "knnMeans": [0.6538],
+    "knnBaseline": [0.6527],
+    "knnZScore": [0.6531],
+    "SVD": [0.6515],
+    "NMF": [0.6838],
+    "NormalPredictor": [1.1537],
+    "SlopeOne": [0.6619],
+    "BaselineOnly": [0.6675],
+    "CoClustering": [0.7125]
 }
 
 # Creating DataFrame and setting 'Metric' as the index
@@ -75,14 +75,14 @@ The following table also includes the results of the Neural Collaborative Filter
 
 # Data for the table
 tuning_data = {
-    "Metric": ["MAE", "MSE", "RMSE"],
-    "NCF DL": [0.6681, 0.8201, 0.9056],
-    "knnBasic": [0.6674, 0.8050, 0.8961],
-    "knnMeans": [0.6340, 0.7264, 0.8529],
-    "knnBaseline": [0.6324, 0.7238, 0.8501],
-    "knnZScore": [0.6330, 0.7245, 0.8507],
-    "SVD": [0.6327, 0.7223, 0.8490],
-    "NMF": [0.6679, 0.8037, 0.8954],
+    "Metric": ["MAE"],
+    "NCF DL": [0.6744],
+    "knnBasic": [0.6674],
+    "knnMeans": [0.6340],
+    "knnBaseline": [0.6324],
+    "knnZScore": [0.6330],
+    "SVD": [0.6327],
+    "NMF": [0.6679],
 }
 
 # Creating DataFrame and setting 'Metric' as the index
@@ -150,4 +150,7 @@ st.markdown('''
 - **Metrics**: The MAE values indicated that predicted ratings were, on average, within 0.63 of the actual ratings, which are satisfying results.
 - **Parameter Tuning**: GridSearchCV improved the performance of some models, but not by a large amount.
 - **Deep Learning**: While the NCF model showed potential, it did not perform as well as classical methods.
+
+
+Future work could focus on further refining deep learning models, integrating interpretability techniques and conducting a more exhaustive grid search for better performance
 ''')
