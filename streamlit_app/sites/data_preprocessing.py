@@ -4,37 +4,6 @@ import pandas as pd
 st.header('Preprocessing')
 
 st.write("""
-Each rating of a user ranges from 0.5 to 5.0 stars.
-Free-text tagging provided by users, enhances the descriptive power of the dataset. 
-""")
-
-
-# Data for the table
-movielens_data = {
-    "Description": ["Ratings", "Tags added", "Movies", "Users"],
-    "Number of data": ["25 million", "to 1.1 million movies", "62,000", "162,000"]
-}
-
-# Creating DataFrame
-df_movielens = pd.DataFrame(movielens_data)
-
-# Displaying the table in Streamlit
-with st.expander('See more Key Performance Indicators (KPIs) of the MovieLens Dataset'):
-    st.table(df_movielens)
-    
-    
-#########################################################################################################
-################################### Preprocessing steps #################################################
-#########################################################################################################
-    
-
-
-st.subheader('Data Preprocessing Steps')
-
-
-
-
-st.write("""
 After selecting and merging the dataframes 'genome-scores', 'genome-tags', 'movies', and 'ratings' from the MovieLens 25M dataset, the following preprocessing steps were carried out:
 """)
 
