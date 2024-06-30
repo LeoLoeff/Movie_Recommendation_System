@@ -4,8 +4,6 @@ import pandas as pd
 st.header('Preprocessing')
 
 st.write("""
-The **MovieLens 25M dataset** is a widely used dataset for recommender systems, with the data being collected from 1995 to 2019.  
-
 Each rating of a user ranges from 0.5 to 5.0 stars.
 Free-text tagging provided by users, enhances the descriptive power of the dataset. 
 """)
@@ -64,8 +62,8 @@ with st.expander('3. Cleaning up the Dataset'):
 with st.expander('4. Sampling'):
     st.write("""
     - Filtered out movies with fewer than 2000 ratings to focus on those with sufficient user interaction.
-    - Using the logarithm, we defined a custom sampling function, reducing the number of rows per movie proportional to the total amount.
-    - Applied the sampling function to each 'movieId' group, resulting in a dataset with 5,273,559 entries.
+    - Using the logarithm function, we defined a custom sampling function, reducing the number of rows per movie proportional to the total number.
+    - Applying the sampling function to each 'movieId' group resulted in a dataset with 5,273,559 entries.
     """)
 
 st.write("""
