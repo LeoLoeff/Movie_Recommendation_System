@@ -9,10 +9,11 @@ st.text("")  # Add empty text for spacing
 st.image(Image.open(os.path.join(os.path.dirname(__file__), "..", "images", "img1.jpg")), caption=" ", width=650)
 
 st.markdown("""
-    <p style="line-height: 2;">     
-    Recommendation systems are important tools, enhancing customer experience and boosting revenue by providing personalized product or service suggestions.
-    Our project focuses on developing a collaborative filtering-based movie recommendation system. We utilized the MovieLens 25M dataset to train and evaluate various models.
-    </p>
+   
+    Recommendation systems are important tools, enhancing customer experience and **boosting revenue** by providing personalized product or service suggestions, which **increase customer satisfaction**.  
+    Our project focuses on developing a collaborative filtering-based movie recommendation system.  
+    We utilized the MovieLens 25M dataset to train and evaluate various models.
+
     
     ## Introduction to the Project
     

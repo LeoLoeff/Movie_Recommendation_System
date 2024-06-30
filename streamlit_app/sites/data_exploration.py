@@ -18,15 +18,24 @@ st.header('Data Exploration')
 
 st.subheader('The MovieLens 25M Dataset')
 
-st.write('Data volume: 25 million ratings, 62,000 movies, and 162,000 users')
-st.write('Time frame covered: January 1995 - November 2019')
+movielens_data = {"Description": ["Ratings", "Movies", "Users", "Tags added"],
+                  "Number of data": ["25 million", "62,000", "162,000", "1.1 million times"]}
+df_movielens = pd.DataFrame(movielens_data)
+st.dataframe(df_movielens, hide_index=True)
 
-ml = pd.DataFrame({"table name": ['movies.csv','links.csv','ratings.csv','tags.csv','genome-scores.csv','genome-tags.csv'],
-                  "columns": ['movieId, title, genres','movieId, imdbId, tmdbId','userId, movieId, rating, timestamp','userId, movieId, tag, timestamp','movieId, tagId, relevance','tagId, tag'],
-                  "length": [62423,62423,25000095,1093360,15584448,1128]})
-                #   "length": ['62,423','62,423','25,000,095','1,093,360','15,584,448','1,128']})
+st.markdown('''
+            - Open Source dataset provided by [GroupLens](https://grouplens.org/)
+            - Time frame covered: January 1995 - November 2019
+            - Each rating of a user ranges from 0.5 to 5.0 stars.
+            - Free-text tagging provided by users, enhances the descriptive power of the dataset.
+            ''')
+
+# ml = pd.DataFrame({"table name": ['movies.csv','links.csv','ratings.csv','tags.csv','genome-scores.csv','genome-tags.csv'],
+#                   "columns": ['movieId, title, genres','movieId, imdbId, tmdbId','userId, movieId, rating, timestamp','userId, movieId, tag, timestamp','movieId, tagId, relevance','tagId, tag'],
+#                   "length": [62423,62423,25000095,1093360,15584448,1128]})
+#                 #   "length": ['62,423','62,423','25,000,095','1,093,360','15,584,448','1,128']})
                   
-st.dataframe(ml, hide_index=True)
+# st.dataframe(ml, hide_index=True)
 
 ######################################################################################################
 ######################################## loading data, images ########################################

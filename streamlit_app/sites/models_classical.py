@@ -135,7 +135,7 @@ fig.update_xaxes(categoryorder='array', categoryarray= order)
 
 
 st.plotly_chart(fig)
-st.caption(f'Chart {n_chart}: Average {metric} from 5-fold cross-validation of optimized Surprise models.')
+st.caption(f'Chart {n_chart}: {metric} for different Surprise models.')
 
 st.markdown('''*GridSearchCV* was applied to all elegible models (*SlopeOne* and *NormalPredictor* do not take arguments).
             Performance was measured in 5-fold *cross-validation*.''')
@@ -172,8 +172,8 @@ with st.expander('See train and test time per model'):
 st.subheader('Surprise models: precision@k and recall@k')
 st.markdown('''
     Transformation of regression problem to classification problem by setting threshold:
-    - rating / prediction >= 3,5 equals relevant / true
-    - rating / prediction < 3,5 equals not relevant / false
+    - rating / prediction >= 3.5 equals relevant / true
+    - rating / prediction < 3.5 equals not relevant / false
 ''')
 
 st.latex(r'''precision@k = \frac{number\:of\:relevant\:recommendations}{number\:of\:recommended\:items}''')
