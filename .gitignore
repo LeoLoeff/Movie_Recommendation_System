@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Data sub-folders containing large datasets
+data/raw
+data/processed
