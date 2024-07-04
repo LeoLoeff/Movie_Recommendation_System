@@ -152,5 +152,5 @@ st.markdown('''
 - **Deep Learning**: While the NCF model showed potential, it did not perform as well as classical methods.
 
 
-Future work could focus on further refining deep learning models, integrating interpretability techniques and conducting a more exhaustive grid search for better performance
+Future work could focus on further refining deep learning models, integrating interpretability techniques and conducting a more exhaustive grid search for better performance.
 ''')

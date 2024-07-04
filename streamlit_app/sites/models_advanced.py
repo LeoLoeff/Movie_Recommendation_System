@@ -27,7 +27,7 @@ st.write("""
     - **Hyperparameter Tuning**:
         - RandomizedSearchCV explored different hyperparameters (embedding dimensions, dropout rates, dense layer units, learning rates, regularization) on 10% of data.
         - The best hyperparameters were used to train the final model.
-        - Best results were obtained after 14 epochs
+        - Best results were obtained after 14 epochs.
 """)
    
 # Find and display image
