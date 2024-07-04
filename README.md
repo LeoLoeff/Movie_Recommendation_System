@@ -18,7 +18,7 @@ You will need to download the data from [MovieLens](https://files.grouplens.org/
 ├── data               <- Should be in your computer but not on Github (only in .gitignore)  
 │   ├── dataframes     <- Pre-processed data for Streamlit app.  
 │   ├── models         <- Pre-calculated models for Streamlit app.  
-│   ├── processed      <- The final, canonical data sets for modeling; Should be on your computer but not on Github (only in .gitignore)  
+│   ├── processed      <- The final data sets for modeling; Should be on your computer but not on Github (only in .gitignore)  
 │   └── raw            <- The original, immutable data dump; Should be on your computer but not on Github (only in .gitignore)  
 
 You will need to install the dependencies (in a dedicated environment) :
