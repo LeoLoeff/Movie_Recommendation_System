@@ -6,11 +6,6 @@ This repository contains the code for our project **Movie Recommendation System*
 
 The goal of this project is to create a recommendation system based on the MovieLens 25M dataset using collaborative filtering and model optimization through Deep Learning algorithms.
 
-This project was developed by the following team :
-
-- Lena Ametsbichler ([GitHub](https://github.com/) / [LinkedIn](https://www.linkedin.com/in/lena-ametsbichler/))
-- Leonhard Löffler ([GitHub](https://github.com/) / [LinkedIn](www.linkedin.com/in/leonhard-loeffler))
-
 You can browse and run the [notebooks](./notebooks). 
 
 You will need to download the data from [MovieLens](https://files.grouplens.org/datasets/movielens/ml-25m.zip) and extract/save it to the directory data/raw:
