@@ -4,12 +4,7 @@ st.title('About')
 
 st.subheader('Contributors')
 box =  st.container(border=True)
-box.write('Lena Ametsbichler')
 box.write('Leonhard Löffler')
-
-st.subheader('Support')
-box =  st.container(border=True)
-box.write('Roseline Polle')
 
 st.subheader('References')
 
